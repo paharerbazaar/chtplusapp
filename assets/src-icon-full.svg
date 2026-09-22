@@ -1,0 +1,7 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1024" height="1024" fill="#145c39"/>
+  <circle cx="512" cy="470" r="300" fill="#ffffff"/>
+  <text x="512" y="440" font-family="Arial, Helvetica, sans-serif" font-size="220" font-weight="700" fill="#145c39" text-anchor="middle" dominant-baseline="middle">CHT</text>
+  <text x="512" y="600" font-family="Arial, Helvetica, sans-serif" font-size="180" font-weight="700" fill="#145c39" text-anchor="middle" dominant-baseline="middle">+</text>
+  <text x="512" y="880" font-family="Arial, Helvetica, sans-serif" font-size="70" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="middle" letter-spacing="6">CHT PLUS</text>
+</svg>

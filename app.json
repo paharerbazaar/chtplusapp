@@ -1,0 +1,60 @@
+{
+  "expo": {
+    "name": "CHT Plus",
+    "slug": "cht-plus",
+    "scheme": "chtplus",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#f4f6f5",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.chtplus.bd"
+    },
+    "android": {
+      "package": "com.chtplus.bd",
+      "adaptiveIcon": {
+        "backgroundColor": "#145c39",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-secure-store",
+      "expo-image",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "backgroundColor": "#145c39",
+          "resizeMode": "contain"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "CHT Plus needs access to your photos so you can add pictures to your listings, services, biodata and profile.",
+          "cameraPermission": "CHT Plus needs access to your camera so you can take a photo to add to your listings, services, biodata or profile."
+        }
+      ],
+      "@react-native-google-signin/google-signin",
+      [
+        "onesignal-expo-plugin",
+        {
+          "mode": "development"
+        }
+      ],
+      "expo-font"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "REPLACE_WITH_EAS_PROJECT_ID"
+      }
+    }
+  }
+}
