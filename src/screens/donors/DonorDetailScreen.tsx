@@ -55,6 +55,7 @@ export function DonorDetailScreen() {
           await addDonorReview(params.id, { rating, comment });
           reviewsQuery.refetch();
         }}
+        onReviewsChanged={() => reviewsQuery.refetch()}
       />
     </Screen>
   );

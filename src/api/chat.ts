@@ -13,6 +13,7 @@ export interface OtherUser {
   id: string;
   name: string;
   photoUrl: string | null;
+  blueBadge: boolean;
 }
 
 export function getMessages(conversationId: string, afterId?: number) {

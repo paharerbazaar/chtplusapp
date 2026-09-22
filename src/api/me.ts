@@ -63,11 +63,16 @@ export function markAllNotificationsRead() {
   return api.post('/me/notifications/read-all').then((r) => r.data);
 }
 
+export interface FollowUser {
+  id: string;
+  name: string;
+  photoUrl: string | null;
+  blueBadge: boolean;
+}
+
 export function getMyFollows() {
   return api
-    .get<{ following: { id: string; name: string; photoUrl: string | null }[]; followers: { id: string; name: string; photoUrl: string | null }[] }>(
-      '/me/follows'
-    )
+    .get<{ following: FollowUser[]; followers: FollowUser[] }>('/me/follows')
     .then((r) => r.data);
 }
 

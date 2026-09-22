@@ -7,6 +7,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Screen } from '@/components/Screen';
 import { LoadingView, ErrorState, Button } from '@/components/Common';
 import { Avatar } from '@/components/Avatar';
+import { VerifiedBadge } from '@/components/VerifiedBadge';
 import { ServiceCard } from '@/components/cards/ServiceCard';
 import { MarketplaceCard } from '@/components/cards/MarketplaceCard';
 import { DonorCard } from '@/components/cards/DonorCard';
@@ -74,7 +75,10 @@ export function PublicProfileScreen() {
       </View>
 
       <View style={styles.body}>
-        <Text style={styles.name}>{profile.name}</Text>
+        <Text style={styles.name}>
+          {profile.name}
+          <VerifiedBadge active={profile.blueBadge} size={18} />
+        </Text>
         {profile.area ? <Text style={styles.area}>📍 {profile.area}</Text> : null}
         <Text style={styles.followCounts}>
           {profile.followerCount} followers · {profile.followingCount} following

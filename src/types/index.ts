@@ -9,6 +9,7 @@ export interface User {
   photoUrl: string | null;
   onboardingCompleted: boolean;
   homeInterests: string[];
+  blueBadge: boolean;
 }
 
 export interface MeResponse {
@@ -240,6 +241,7 @@ export interface ChatConversation {
   otherUserId: string;
   otherUserName: string;
   otherUserPhotoUrl: string | null;
+  otherUserBlueBadge: boolean;
   lastMessageAt: string | null;
   lastMessageBody: string | null;
   unreadCount: number;
@@ -269,8 +271,24 @@ export interface Review {
   targetType: 'service' | 'donor' | 'doctor';
   targetId: string;
   reviewerName: string;
+  reviewerUserId?: string | null;
+  reviewerBlueBadge?: boolean;
   rating: number;
   comment: string;
+  createdAt?: string;
+  date?: string;
+  loveCount: number;
+  lovedByMe?: boolean;
+  replyCount: number;
+}
+
+export interface ReviewReply {
+  id: number;
+  userId: string;
+  userName: string;
+  userPhotoUrl?: string | null;
+  userBlueBadge?: boolean;
+  replyText: string;
   createdAt?: string;
   date?: string;
 }
@@ -283,6 +301,7 @@ export interface PublicProfile {
   area: string | null;
   bio: string | null;
   chatEnabled: boolean;
+  blueBadge: boolean;
   createdAt: string;
   followerCount: number;
   followingCount: number;

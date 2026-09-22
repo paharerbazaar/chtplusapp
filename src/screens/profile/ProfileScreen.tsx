@@ -6,6 +6,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Screen } from '@/components/Screen';
 import { Avatar } from '@/components/Avatar';
 import { Badge } from '@/components/Common';
+import { VerifiedBadge } from '@/components/VerifiedBadge';
 import { useAuth } from '@/auth/AuthContext';
 import { colors, radius, spacing } from '@/constants/theme';
 import type { RootStackParamList } from '@/navigation/types';
@@ -40,7 +41,10 @@ export function ProfileScreen() {
       <Pressable style={styles.header} onPress={() => navigation.navigate('PublicProfile', { id: user.id })}>
         <Avatar uri={user.photoUrl} name={user.name} size={64} />
         <View style={{ flex: 1 }}>
-          <Text style={styles.name}>{user.name}</Text>
+          <Text style={styles.name}>
+            {user.name}
+            <VerifiedBadge active={user.blueBadge} size={16} />
+          </Text>
           <Text style={styles.email}>{user.email}</Text>
         </View>
         <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />

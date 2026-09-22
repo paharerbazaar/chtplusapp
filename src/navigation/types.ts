@@ -4,6 +4,8 @@ export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   Onboarding: undefined;
+  ForgotPassword: undefined;
+  ResetPassword: { email: string };
 
   ServicesList: { categoryId?: string } | undefined;
   ServiceDetail: { id: string };

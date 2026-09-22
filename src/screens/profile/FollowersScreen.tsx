@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Screen } from '@/components/Screen';
 import { LoadingView, EmptyState } from '@/components/Common';
 import { Avatar } from '@/components/Avatar';
+import { VerifiedBadge } from '@/components/VerifiedBadge';
 import { getMyFollows } from '@/api/me';
 import { colors, spacing } from '@/constants/theme';
 import type { RootStackParamList } from '@/navigation/types';
@@ -42,7 +43,10 @@ export function FollowersScreen() {
           renderItem={({ item }) => (
             <Pressable style={styles.row} onPress={() => navigation.navigate('PublicProfile', { id: item.id })}>
               <Avatar uri={item.photoUrl} name={item.name} size={44} />
-              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.name}>
+                {item.name}
+                <VerifiedBadge active={item.blueBadge} size={13} />
+              </Text>
             </Pressable>
           )}
         />

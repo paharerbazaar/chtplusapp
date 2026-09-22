@@ -11,6 +11,8 @@ import { navigationRef } from './navigationRef';
 import { LoginScreen } from '@/screens/auth/LoginScreen';
 import { RegisterScreen } from '@/screens/auth/RegisterScreen';
 import { OnboardingScreen } from '@/screens/auth/OnboardingScreen';
+import { ForgotPasswordScreen } from '@/screens/auth/ForgotPasswordScreen';
+import { ResetPasswordScreen } from '@/screens/auth/ResetPasswordScreen';
 
 import { ServicesListScreen } from '@/screens/services/ServicesListScreen';
 import { ServiceDetailScreen } from '@/screens/services/ServiceDetailScreen';
@@ -70,6 +72,8 @@ export function RootNavigator() {
           <>
             <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'Create account' }} />
+            <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ title: 'Forgot password' }} />
+            <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} options={{ title: 'Reset password' }} />
           </>
         ) : !user?.onboardingCompleted ? (
           <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />

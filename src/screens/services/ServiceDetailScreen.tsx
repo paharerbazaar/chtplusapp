@@ -133,6 +133,7 @@ export function ServiceDetailScreen() {
             await addServiceReview(params.id, { rating, comment });
             reviewsQuery.refetch();
           }}
+          onReviewsChanged={() => reviewsQuery.refetch()}
         />
       </View>
     </Screen>

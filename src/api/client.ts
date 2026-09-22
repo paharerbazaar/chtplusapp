@@ -57,6 +57,8 @@ const ERROR_MESSAGES: Record<string, string> = {
   date_unavailable: 'That date is no longer available. Please pick another.',
   network_error: 'Could not reach the server. Check your internet connection.',
   timeout: 'The server took too long to respond. Please try again.',
+  invalid_code: 'That code is invalid or has expired. Please request a new one.',
+  ip_blocked: 'Access from your network has been blocked. Contact support if you think this is a mistake.',
   google_not_configured: 'Google sign-in is not available right now.',
   invalid_google_token: 'Google sign-in failed. Please try again.',
   email_not_verified: 'Your Google email is not verified.',

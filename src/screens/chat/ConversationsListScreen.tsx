@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Screen } from '@/components/Screen';
 import { LoadingView, EmptyState, ErrorState, Badge } from '@/components/Common';
 import { Avatar } from '@/components/Avatar';
+import { VerifiedBadge } from '@/components/VerifiedBadge';
 import { getConversations } from '@/api/chat';
 import { apiErrorMessage } from '@/api/client';
 import { formatRelativeShort } from '@/utils/format';
@@ -54,7 +55,10 @@ export function ConversationsListScreen() {
               <Avatar uri={item.otherUserPhotoUrl} name={item.otherUserName} size={48} />
               <View style={{ flex: 1 }}>
                 <View style={styles.rowTop}>
-                  <Text style={styles.name} numberOfLines={1}>{item.otherUserName}</Text>
+                  <Text style={styles.name} numberOfLines={1}>
+                    {item.otherUserName}
+                    <VerifiedBadge active={item.otherUserBlueBadge} size={13} />
+                  </Text>
                   <Text style={styles.time}>{formatRelativeShort(item.lastMessageAt)}</Text>
                 </View>
                 <View style={styles.rowBottom}>

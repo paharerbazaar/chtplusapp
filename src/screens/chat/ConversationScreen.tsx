@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, KeyboardAvoidingView, Platform, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useRoute, RouteProp } from '@react-navigation/native';
+import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
 import { Screen } from '@/components/Screen';
 import { TextField, LoadingView } from '@/components/Common';
+import { VerifiedBadge } from '@/components/VerifiedBadge';
 import { getMessages, sendMessage } from '@/api/chat';
 import { useAuth } from '@/auth/AuthContext';
 import { formatDateTime } from '@/utils/format';
@@ -15,13 +16,28 @@ import type { RootStackParamList } from '@/navigation/types';
 
 export function ConversationScreen() {
   const { params } = useRoute<RouteProp<RootStackParamList, 'Conversation'>>();
+  const navigation = useNavigation();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(true);
   const [text, setText] = useState('');
   const [sending, setSending] = useState(false);
+  const [otherUserBlueBadge, setOtherUserBlueBadge] = useState(false);
   const lastIdRef = useRef<number | undefined>(undefined);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => (
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{ fontSize: 17, fontWeight: '600', color: colors.text }} numberOfLines={1}>
+            {params.otherUserName}
+          </Text>
+          <VerifiedBadge active={otherUserBlueBadge} size={15} />
+        </View>
+      ),
+    });
+  }, [navigation, params.otherUserName, otherUserBlueBadge]);
 
   // Polls GET .../messages?after=<lastId> on an interval (there's no
   // websocket on the backend) and appends whatever's new.
@@ -31,6 +47,7 @@ export function ConversationScreen() {
       try {
         const res = await getMessages(params.conversationId, lastIdRef.current);
         if (cancelled) return;
+        if (res.otherUser) setOtherUserBlueBadge(res.otherUser.blueBadge);
         if (res.messages.length > 0) {
           lastIdRef.current = res.messages[res.messages.length - 1].id;
           setMessages((prev) => [...prev, ...res.messages]);

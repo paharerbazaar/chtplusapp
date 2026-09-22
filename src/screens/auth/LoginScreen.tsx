@@ -70,6 +70,10 @@ export function LoginScreen() {
         <TextField value={password} onChangeText={setPassword} placeholder="••••••••" secureTextEntry textContentType="password" />
       </Field>
 
+      <Pressable style={styles.forgotLink} onPress={() => navigation.navigate('ForgotPassword')}>
+        <Text style={styles.forgotText}>Forgot password?</Text>
+      </Pressable>
+
       <Button title="Log in" onPress={onLogin} loading={loading} style={{ marginTop: spacing.sm }} />
 
       {google.ready ? (
@@ -98,4 +102,6 @@ const styles = StyleSheet.create({
   brandSubtitle: { fontSize: 13, color: colors.textMuted, marginTop: 2 },
   registerLink: { marginTop: spacing.xl, alignItems: 'center' },
   registerText: { color: colors.textMuted, fontSize: 13.5 },
+  forgotLink: { alignItems: 'flex-end', marginBottom: spacing.sm, marginTop: -spacing.xs },
+  forgotText: { color: colors.primary, fontSize: 13, fontWeight: '600' },
 });

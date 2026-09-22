@@ -1,5 +1,10 @@
 import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
-import { login as apiLogin, register as apiRegister, loginWithGoogle as apiLoginWithGoogle } from '@/api/auth';
+import {
+  login as apiLogin,
+  register as apiRegister,
+  loginWithGoogle as apiLoginWithGoogle,
+  resetPassword as apiResetPassword,
+} from '@/api/auth';
 import { getMe } from '@/api/me';
 import { getToken, setToken, clearToken } from '@/lib/tokenStorage';
 import { setUnauthorizedHandler } from '@/api/client';
@@ -13,6 +18,7 @@ interface AuthContextValue {
   login: (email: string, password: string) => Promise<void>;
   register: (input: { name: string; email: string; password: string; phone?: string; area?: string }) => Promise<void>;
   loginWithGoogle: (credential: string) => Promise<void>;
+  resetPassword: (input: { email: string; code: string; newPassword: string }) => Promise<void>;
   logout: () => Promise<void>;
   refreshMe: () => Promise<void>;
 }
@@ -91,9 +97,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [refreshMe]
   );
 
+  const resetPassword = useCallback(
+    async (input: { email: string; code: string; newPassword: string }) => {
+      const res = await apiResetPassword(input);
+      await setToken(res.token);
+      setUser(res.user);
+      await refreshMe();
+    },
+    [refreshMe]
+  );
+
   const value = useMemo<AuthContextValue>(
-    () => ({ isLoading, isAuthenticated: !!user, user, me, login, register, loginWithGoogle, logout, refreshMe }),
-    [isLoading, user, me, login, register, loginWithGoogle, logout, refreshMe]
+    () => ({ isLoading, isAuthenticated: !!user, user, me, login, register, loginWithGoogle, resetPassword, logout, refreshMe }),
+    [isLoading, user, me, login, register, loginWithGoogle, resetPassword, logout, refreshMe]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

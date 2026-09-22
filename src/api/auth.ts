@@ -17,3 +17,11 @@ export function register(input: { name: string; email: string; password: string;
 export function loginWithGoogle(credential: string) {
   return api.post<AuthResponse>('/auth/google', { credential }).then((r) => r.data);
 }
+
+export function requestPasswordReset(email: string) {
+  return api.post<{ ok: true }>('/auth/forgot-password', { email }).then((r) => r.data);
+}
+
+export function resetPassword(input: { email: string; code: string; newPassword: string }) {
+  return api.post<AuthResponse>('/auth/reset-password', input).then((r) => r.data);
+}
