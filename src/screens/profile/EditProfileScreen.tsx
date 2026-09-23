@@ -8,6 +8,7 @@ import { Screen } from '@/components/Screen';
 import { Button, Field, TextField, Card } from '@/components/Common';
 import { SelectField } from '@/components/Select';
 import { Avatar } from '@/components/Avatar';
+import { PhotoCropModal, type CropRect } from '@/components/PhotoCropModal';
 import { useAuth } from '@/auth/AuthContext';
 import {
   updateMe, updateMeDetails, updateFieldPrivacy, uploadMyPhoto, uploadMyCoverPhoto,
@@ -24,13 +25,21 @@ const PRIVACY_OPTIONS = [
   { label: 'Only me', value: 'only_me' },
 ];
 
+// Cover photos are shown roughly 3:1 on the profile (app and website).
+const COVER_ASPECT = 3;
+
+type CropTarget = 'photo' | 'cover';
+
 async function pickImage() {
   const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-  if (!permission.granted) return null;
+  if (!permission.granted) {
+    Alert.alert('Permission needed', 'Allow photo library access to choose a picture.');
+    return null;
+  }
   const result = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'], quality: 0.85 });
   if (result.canceled) return null;
   const asset = result.assets[0];
-  return { uri: asset.uri, name: asset.fileName, mimeType: asset.mimeType };
+  return { uri: asset.uri, name: asset.fileName, mimeType: asset.mimeType, width: asset.width, height: asset.height };
 }
 
 export function EditProfileScreen() {
@@ -53,18 +62,28 @@ export function EditProfileScreen() {
   const [position, setPosition] = useState('');
   const [institution, setInstitution] = useState('');
 
-  const onUploadPhoto = async () => {
+  // A picked photo first opens in the crop editor; it's uploaded only on "Update".
+  const [cropping, setCropping] = useState<{ target: CropTarget; image: NonNullable<Awaited<ReturnType<typeof pickImage>>> } | null>(null);
+  const [uploading, setUploading] = useState(false);
+
+  const startCrop = async (target: CropTarget) => {
     const image = await pickImage();
-    if (!image) return;
-    await uploadMyPhoto(image);
-    await refreshMe();
+    if (image) setCropping({ target, image });
   };
 
-  const onUploadCover = async () => {
-    const image = await pickImage();
-    if (!image) return;
-    await uploadMyCoverPhoto(image);
-    await refreshMe();
+  const onCropConfirm = async (crop: CropRect) => {
+    if (!cropping) return;
+    setUploading(true);
+    try {
+      if (cropping.target === 'photo') await uploadMyPhoto(cropping.image, crop);
+      else await uploadMyCoverPhoto(cropping.image, crop);
+      await refreshMe();
+      setCropping(null);
+    } catch (err) {
+      Alert.alert('Could not update photo', apiErrorMessage(err));
+    } finally {
+      setUploading(false);
+    }
   };
 
   const onSave = async () => {
@@ -108,7 +127,7 @@ export function EditProfileScreen() {
   return (
     <Screen scroll>
       <View style={styles.coverWrap}>
-        <Pressable onPress={onUploadCover}>
+        <Pressable onPress={() => startCrop('cover')}>
           {me?.user.coverPhotoUrl ? (
             <Image source={{ uri: resolveImageUrl(me.user.coverPhotoUrl) }} style={styles.cover} contentFit="cover" />
           ) : (
@@ -117,7 +136,7 @@ export function EditProfileScreen() {
             </View>
           )}
         </Pressable>
-        <Pressable style={styles.avatarWrap} onPress={onUploadPhoto}>
+        <Pressable style={styles.avatarWrap} onPress={() => startCrop('photo')}>
           <Avatar uri={user?.photoUrl} name={user?.name || ''} size={78} />
           <View style={styles.cameraBadge}>
             <Ionicons name="camera" size={14} color="#fff" />
@@ -191,6 +210,16 @@ export function EditProfileScreen() {
           </Pressable>
         </View>
       </View>
+
+      <PhotoCropModal
+        image={cropping?.image ?? null}
+        aspect={cropping?.target === 'cover' ? COVER_ASPECT : 1}
+        round={cropping?.target === 'photo'}
+        title={cropping?.target === 'cover' ? 'Adjust cover photo' : 'Adjust profile picture'}
+        saving={uploading}
+        onCancel={() => setCropping(null)}
+        onConfirm={onCropConfirm}
+      />
     </Screen>
   );
 }

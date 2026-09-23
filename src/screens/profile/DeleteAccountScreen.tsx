@@ -15,7 +15,7 @@ export function DeleteAccountScreen() {
   const onDelete = () => {
     Alert.alert(
       'Delete your account?',
-      'This immediately disables login and clears your personal details. Content you posted (listings, reviews) is not automatically removed. This cannot be undone.',
+      'Your account and everything you posted (services, listings, biodata, reviews, chats) will be permanently deleted. This cannot be undone.',
       [
         { text: 'Cancel', style: 'cancel' },
         {
@@ -44,11 +44,10 @@ export function DeleteAccountScreen() {
         <Text style={styles.title}>Delete your account</Text>
         <Text style={styles.body}>
           Deleting your account will:{'\n\n'}
-          • Immediately disable login to this account{'\n'}
-          • Remove your name, photos, bio and contact details{'\n'}
-          • Keep the text already on your posted listings/reviews (e.g. a phone number typed into a listing) since
-          other users may rely on it{'\n\n'}
-          This cannot be undone. Contact support@chtplus.xyz if you'd like specific content removed as well.
+          • Permanently remove your account, name, photos, bio and contact details{'\n'}
+          • Delete everything you posted: services, marketplace listings, biodata, donor profile and reviews{'\n'}
+          • Delete your chats, follows, appointments, saved items and coin history{'\n\n'}
+          This cannot be undone.
         </Text>
         <Button title="Delete my account" variant="danger" onPress={onDelete} loading={loading} style={{ marginTop: spacing.xl, width: '100%' }} />
       </View>

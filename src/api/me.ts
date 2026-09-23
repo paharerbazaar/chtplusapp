@@ -1,4 +1,5 @@
 import { api } from './client';
+import type { CropRect } from '@/components/PhotoCropModal';
 import type {
   MeResponse,
   User,
@@ -31,17 +32,22 @@ export function updateFieldPrivacy(field: 'currentCity' | 'hometown' | 'relation
   return api.post('/me/details/privacy', { field, privacy }).then((r) => r.data);
 }
 
-export function uploadMyPhoto(image: PickedImage) {
+function cropFields(crop?: CropRect): Record<string, string> | undefined {
+  if (!crop) return undefined;
+  return { cropX: String(crop.x), cropY: String(crop.y), cropWidth: String(crop.width), cropHeight: String(crop.height) };
+}
+
+export function uploadMyPhoto(image: PickedImage, crop?: CropRect) {
   return api
-    .post<{ ok: true; photoUrl: string }>('/me/photo', toFormData('photo', image), {
+    .post<{ ok: true; photoUrl: string }>('/me/photo', toFormData('photo', image, cropFields(crop)), {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
     .then((r) => r.data);
 }
 
-export function uploadMyCoverPhoto(image: PickedImage) {
+export function uploadMyCoverPhoto(image: PickedImage, crop?: CropRect) {
   return api
-    .post<{ ok: true; coverPhotoUrl: string }>('/me/cover-photo', toFormData('photo', image), {
+    .post<{ ok: true; coverPhotoUrl: string }>('/me/cover-photo', toFormData('photo', image, cropFields(crop)), {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
     .then((r) => r.data);

@@ -65,9 +65,9 @@ export function PrivacyPolicyScreen() {
 
       <H>Delete your account</H>
       <P>
-        You can permanently delete your account from Profile → Settings → Delete Account. This immediately disables
-        login and clears your personal details. Content you posted keeps its own name/phone text (already stored on
-        the listing itself) — contact {CONTACT_EMAIL} if you'd like it removed too. Without the app installed, email
+        You can permanently delete your account from Profile → Settings → Delete Account. This immediately removes
+        your account and everything linked to it — profile, photos, services, listings, biodata, donor profile,
+        reviews, chats, follows, appointments and coin records. Without the app installed, email
         {' '}{CONTACT_EMAIL} from your account's email address to request deletion.
       </P>
 
